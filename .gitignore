@@ -1,5 +1,6 @@
 .DS_Store
 config.php
+patio.tmproj
 images/moviesfanart/*
 images/moviesthumbs/*
 images/tvshowsfanart/*
