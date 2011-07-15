@@ -1,0 +1,8 @@
+.DS_Store
+config.php
+images/moviesfanart/*
+images/moviesthumbs/*
+images/tvshowsfanart/*
+images/tvshowsthumbs/*
+docs/movie.txt
+docs/tvshow.txt
