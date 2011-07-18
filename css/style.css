@@ -78,7 +78,7 @@ body {
 {
 	background-color:black;
 	margin:0 auto;
-	margin-top: 60px;
+	margin-top: 40px;
 	min-width: 20%;
 	max-width: 80%;
 	height: 50px;
@@ -102,19 +102,20 @@ body {
 {
 	background-color:black;
 	margin: auto;
-	margin-top: 60px;
+	margin-top: 30px;
 	width: 600px;
+	height: 200px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
 	opacity:0.6;
 	filter: alpha(opacity = 60);
-	overflow: auto;
+	overflow: hidden;
 }
 
 #plot p
 {
 	margin:20px 20px;
-	font-weight:bold;
+	font-weight: bold;
 	color:white;
 }
 
@@ -123,7 +124,7 @@ body {
 	background-color:black;
 	width: 600px;
 	margin: auto;
-	margin-top: 40px;
+	margin-top: 20px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 	opacity:0.6;
@@ -135,8 +136,28 @@ body {
 {
 	margin:5px 5px;
 	text-align: center;
-	font-weight:bold;
+	font-weight: bold;
 	color:white;
+}
+
+#control {
+	position:absolute; z-index:3;
+	bottom:48px;
+	left: 50%;
+	width:200px;
+	height:200px;
+	margin-left: -100px;
+	/*background-color:black;
+	opacity:0.6;
+	filter: alpha(opacity = 60);*/
+}
+	
+#play {
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin-top:-50px;
+	margin-left:-50px;
 }
 
 .resize

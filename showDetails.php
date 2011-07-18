@@ -8,6 +8,20 @@
 <title>:.Patio, a PHP/MySQL frontend for XBMC.:</title>
 <link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
 
+<script type="application/javascript" src="scripts/iscroll.js"></script>
+
+<script type="text/javascript">
+
+function loaded() {
+	var scrollContent = new iScroll('wrapper');
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+window.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }, 200), false);
+
+</script>
+
 <?php
 	$name = $_GET['name'];
 	$type = $_GET['type'];
@@ -55,19 +69,27 @@
 			?>
 		</div>
 
-		<div id="details">
-			<?php
-				if($type == "movie")
-				{
-					$rating = floatval($row[4]);
-					echo "<p>Rating: $rating Votes: $row[3] Runtime: $row[5] Director: $row[6]</p>";
-				}
-				else
-				{
-					$rating = floatval($row[2]);
-					echo "<p>Rating: $rating Votes: $row[3] MPAA: $row[4] Studio: $row[5]</p>";
-				}
-			?>
+				<div id="details">
+				<?php
+					if($type == "movie")
+					{
+						$rating = floatval($row[4]);
+						echo "<p>Rating: $rating Votes: $row[3] Runtime: $row[5] Director: $row[6]</p>";
+					}
+					else
+					{
+						$rating = floatval($row[2]);
+						echo "<p>Rating: $rating Votes: $row[3] MPAA: $row[4] Studio: $row[5]</p>";
+					}
+				?>
+				</div>
+		
+		<div id="control">
+			<div id="play">
+				<a href=#>
+					<img src = "images/play.png" />
+				</a>
+			</div>
 		</div>
 		
 		<div id="footer">

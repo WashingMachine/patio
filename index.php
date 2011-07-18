@@ -28,6 +28,10 @@ window.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }
 <div id="wrapper">
 	<div id="scroller">
 		<ul id="thelist">
+			<?php
+				include('scripts/functions.php');
+				getThumbs();
+			?>
 	</div>
 </div>
 <div id="footer">

@@ -43,7 +43,7 @@ class smb {
         $pu = parse_url (trim($url));
         foreach (array ('domain', 'user', 'pass', 'host', 'port', 'path') as $i)
             if (! isset($pu[$i])) $pu[$i] = '';
-        if (count ($userdomain = split (';', urldecode ($pu['user']))) > 1)
+        if (count ($userdomain = preg_split ('/;/', urldecode ($pu['user']))) > 1)
             @list ($pu['domain'], $pu['user']) = $userdomain;
         $path = preg_replace (array ('/^\//', '/\/$/'), '', urldecode ($pu['path']));
         list ($pu['share'], $pu['path']) = (preg_match ('/^([^\/]+)\/(.*)/', $path, $regs))
@@ -147,7 +147,7 @@ class smb {
                         ? array (trim ($regs2[2]), trim ($regs2[1]))
                         : array ('', trim ($regs[1]));
                     list ($his, $im) = array (
-                    split(':', $regs[6]), 1 + strpos("JanFebMarAprMayJunJulAugSepOctNovDec", $regs[4]) / 3);
+                    preg_split('/:/', $regs[6]), 1 + strpos("JanFebMarAprMayJunJulAugSepOctNovDec", $regs[4]) / 3);
                     $i = ($name <> '.' && $name <> '..')
                         ? array (
                             $name,
@@ -158,7 +158,7 @@ class smb {
                           )
                         : array();
                     break;
-                case 'error':   trigger_error($regs[1], E_USER_ERROR);
+                case 'error':   trigger_error($regs[1], E_USER_WARNING);
             }
             if ($i) switch ($i[1]) {
                 case 'file':
@@ -200,7 +200,7 @@ class smb {
                 break;
             case 'path':
                 if ($o = smb::execute ('dir "'.$pu['path'].'"', $pu)) {
-                    $p = split ("[\\]", $pu['path']);
+                    $p = preg_split ("[\\]", $pu['path']);
                     $name = $p[count($p)-1];
                     if (isset ($o['info'][$name])) {
                        $stat = smb::addstatcache ($url, $o['info'][$name]);
@@ -211,7 +211,7 @@ class smb {
                     trigger_error ("url_stat(): dir failed for path '{$pu['path']}'", E_USER_WARNING);
                 }
                 break;
-            default: trigger_error ('error in URL', E_USER_ERROR);
+            default: trigger_error ('error in URL', E_USER_WARNING);
         }
         return $stat;
     }
@@ -240,7 +240,7 @@ class smb {
 
     function unlink ($url) {
         $pu = smb::parse_url($url);
-        if ($pu['type'] <> 'path') trigger_error('unlink(): error in URL', E_USER_ERROR);
+        if ($pu['type'] <> 'path') trigger_error('unlink(): error in URL', E_USER_WARNING);
         smb::clearstatcache ($url);
         return smb::execute ('del "'.$pu['path'].'"', $pu);
     }
@@ -252,10 +252,10 @@ class smb {
             $from['user'] <> $to['user'] ||
             $from['pass'] <> $to['pass'] ||
             $from['domain'] <> $to['domain']) {
-            trigger_error('rename(): FROM & TO must be in same server-share-user-pass-domain', E_USER_ERROR);
+            trigger_error('rename(): FROM & TO must be in same server-share-user-pass-domain', E_USER_WARNING);
         }
         if ($from['type'] <> 'path' || $to['type'] <> 'path') {
-            trigger_error('rename(): error in URL', E_USER_ERROR);
+            trigger_error('rename(): error in URL', E_USER_WARNING);
         }
         smb::clearstatcache ($url_from);
         return smb::execute ('rename "'.$from['path'].'" "'.$to['path'].'"', $to);
@@ -263,13 +263,13 @@ class smb {
 
     function mkdir ($url, $mode, $options) {
         $pu = smb::parse_url($url);
-        if ($pu['type'] <> 'path') trigger_error('mkdir(): error in URL', E_USER_ERROR);
+        if ($pu['type'] <> 'path') trigger_error('mkdir(): error in URL', E_USER_WARNING);
         return smb::execute ('mkdir "'.$pu['path'].'"', $pu);
     }
 
     function rmdir ($url) {
         $pu = smb::parse_url($url);
-        if ($pu['type'] <> 'path') trigger_error('rmdir(): error in URL', E_USER_ERROR);
+        if ($pu['type'] <> 'path') trigger_error('rmdir(): error in URL', E_USER_WARNING);
         smb::clearstatcache ($url);
         return smb::execute ('rmdir "'.$pu['path'].'"', $pu);
     }
@@ -321,7 +321,7 @@ class smb_stream_wrapper extends smb {
                 }
                 break;
             default:
-                trigger_error ('dir_opendir(): error in URL', E_USER_ERROR);
+                trigger_error ('dir_opendir(): error in URL', E_USER_WARNING);
         }
         return TRUE;
     }
@@ -357,7 +357,7 @@ class smb_stream_wrapper extends smb {
         $this->url = $url;
         $this->mode = $mode;
         $this->parsed_url = $pu = smb::parse_url($url);
-        if ($pu['type'] <> 'path') trigger_error('stream_open(): error in URL', E_USER_ERROR);
+        if ($pu['type'] <> 'path') trigger_error('stream_open(): error in URL', E_USER_WARNING);
         switch ($mode) {
             case 'r':
             case 'r+':
