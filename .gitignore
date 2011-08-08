@@ -1,10 +1,10 @@
 .DS_Store
 config.php
 patio.tmproj
-images/moviesfanart/*
-images/moviesthumbs/*
-images/tvshowsfanart/*
-images/tvshowsthumbs/*
-docs/movie.txt
-docs/tvshow.txt
+images/MovieFanart/*
+images/MovieThumbs/*
+images/TVShowFanart/*
+images/TVShowThumbs/*
+docs/*
+mediafrontpage/*
 mfp/*
