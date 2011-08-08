@@ -30,26 +30,32 @@ window.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }
 			<ul id="thelist">
 				<?php
 					include('config.php');
-					include('scripts/functions.php');
+					
+						if(substr($tvshow_thumb, -1) != "/") $tvshow_thumb .= "/";
 				
-						$images = getImages($tvshow_thumb);
-						foreach($images as $img)
+						$images = glob("" . $tvshow_thumb . "*.tbn");
+						
+						$imgs = '';
+
+						foreach($images as $image){ $imgs[] = "$image"; }
+						
+						foreach ($imgs as $img)
 						{
-							$path = $img['file'];
-							$path = htmlspecialchars($path, ENT_QUOTES);
+							$path = htmlspecialchars($img, ENT_QUOTES);
 							$tok = strtok($path, "/");
 							$tok = strtok("/");
 							$name = strtok("/");
 							$name = substr($name, 0, -4);
-
-						echo "<a href = 'showdetails.php?name=$name&type=tvshow'> <img class= 'resize' src = '$path' /> </a>";	
+							$year = '';
+							
+						echo "<a href = 'showdetails.php?name=".urlencode($name)."&year=$year&type=tvshow'> <img class= 'resize' src = '$path' /> </a>";	
 						}
 				?>
 		</div>
 	</div>
 
 	<div id="footer">
-		<a href = "movies.php">
+		<a href = "index.php">
 			<img src = "images/movies.png" />
 		</a>
 	</div>

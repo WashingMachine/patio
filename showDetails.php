@@ -24,19 +24,25 @@ window.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }
 
 <?php
 	$name = $_GET['name'];
+	$year = $_GET['year'];
 	$type = $_GET['type'];
-	$ext = '.jpg';
+	$ext = '.tbn';
 	include('config.php');
 	include('scripts/functions.php');
+	include('scripts/xbmc.php');
+	
+	//$xbmcConfig = array('host' => $xbmc_host, 'port' => $xbmc_port, 'user' => $xbmc_user, 'pass' => $xbmc_pass);
+	//$xbmcJson = new xbmcJson($xbmcConfig);
 	
 	$mysql_name = mysql_escape_mimic($name);
 
 	if($type == "movie")
 	{
 		if(substr($movie_fanart, -1) != "/") $movie_fanart .= "/";
-		$path = $movie_fanart.$name.$ext;
+		$path = $movie_fanart.$name." ".$year.$ext;
 
-		$result = connect("SELECT c00,c01,c02,c04,c05,c11,c15 FROM movie WHERE c22 LIKE '%$mysql_name%'");
+		//$result = connect("SELECT c00,c01,c02,c04,c05,c11,c15 FROM movie WHERE c22 LIKE '%$mysql_name%'");
+		$result = connect("SELECT c00,c01,c02,c04,c05,c11,c15 FROM movie WHERE c22 LIKE '%$mysql_name%' OR c00 LIKE '%$mysql_name%'");
 		$row = mysql_fetch_row($result);
 	}
 	else
@@ -86,7 +92,7 @@ window.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }
 		
 		<div id="control">
 			<div id="play">
-				<a href=#>
+				<a href= # >
 					<img src = "images/play.png" />
 				</a>
 			</div>

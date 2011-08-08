@@ -25,23 +25,41 @@ window.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }
 </head>
 <body>
 
-<div id="wrapper">
-	<div id="scroller">
-		<ul id="thelist">
-			<?php
-				include('scripts/functions.php');
-				getThumbs();
-			?>
+	<div id="wrapper">
+		<div id="scroller">
+			<ul id="thelist">
+				<?php
+					include('config.php');
+					
+						if(substr($movie_thumb, -1) != "/") $movie_thumb .= "/";
+
+						$images = glob("" . $movie_thumb . "*.tbn");
+						
+						$imgs = '';
+
+						foreach($images as $image){ $imgs[] = "$image"; }
+						
+						foreach ($imgs as $img)
+						{
+							$path = htmlspecialchars($img, ENT_QUOTES);
+							$tok = strtok($path, "/");
+							$tok = strtok("/");
+							$name = strtok("/");
+							$tmp = substr($name, 0, -4);
+							$year = substr($tmp, -6);
+							$name = substr($tmp, 0, -7);
+
+						echo "<a href = 'showdetails.php?name=".urlencode($name)."&year=$year&type=movie'> <img class= 'resize' src = '$path' /> </a>";				
+						}
+				?>
+		</div>
 	</div>
-</div>
-<div id="footer">
-	<a href = "movies.php">
-		<img src = "images/movies.png" />
-	</a>
-	<a href = "tvshows.php">
-		<img src = "images/tvshows.png" />
-	</a>	
-</div>
+	
+	<div id="footer">
+		<a href = "tvshows.php">
+			<img src = "images/tvshows.png" />
+		</a>
+	</div>
 
 </body>
 </html>
