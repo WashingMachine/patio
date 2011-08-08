@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<title>:.Patio, a PHP/MySQL frontend for XBMC.:</title>
+<title>.: Patio, a PHP/MySQL frontend for XBMC :.</title>
 <link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
 
-<script type="application/javascript" src="scripts/iscroll.js"></script>
+<script type="application/javascript" src="iscroll.js"></script>
 
 <script type="text/javascript">
 
@@ -39,16 +39,13 @@ window.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }
 
 						foreach($images as $image){ $imgs[] = "$image"; }
 						
+						foreach($images as $image){ $imgs[] = "$image"; }
+						
 						foreach ($imgs as $img)
 						{
 							$path = htmlspecialchars($img, ENT_QUOTES);
-							$tok = strtok($path, "/");
-							$tok = strtok("/");
-							$name = strtok("/");
-							$name = substr($name, 0, -4);
-							$year = '';
-							
-						echo "<a href = 'showdetails.php?name=".urlencode($name)."&year=$year&type=tvshow'> <img class= 'resize' src = '$path' /> </a>";	
+							$name = str_replace($tvshow_thumb, '', $img);
+							echo "<a href = 'showdetails.php?name=".urlencode($name)."&type=tvshow'> <img class= 'resize' src = '$path' /> </a>";				
 						}
 				?>
 		</div>

@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<title>:.Patio, a PHP/MySQL frontend for XBMC.:</title>
+<title>.: Patio, a PHP/MySQL frontend for XBMC :.</title>
 <link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
 
-<script type="application/javascript" src="scripts/iscroll.js"></script>
+<script type="application/javascript" src="iscroll.js"></script>
 
 <script type="text/javascript">
 
@@ -30,6 +30,7 @@ window.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }
 			<ul id="thelist">
 				<?php
 					include('config.php');
+					include('functions.php');
 					
 						if(substr($movie_thumb, -1) != "/") $movie_thumb .= "/";
 
@@ -42,14 +43,8 @@ window.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }
 						foreach ($imgs as $img)
 						{
 							$path = htmlspecialchars($img, ENT_QUOTES);
-							$tok = strtok($path, "/");
-							$tok = strtok("/");
-							$name = strtok("/");
-							$tmp = substr($name, 0, -4);
-							$year = substr($tmp, -6);
-							$name = substr($tmp, 0, -7);
-
-						echo "<a href = 'showdetails.php?name=".urlencode($name)."&year=$year&type=movie'> <img class= 'resize' src = '$path' /> </a>";				
+							$name = str_replace($movie_thumb, '', $img);
+							echo "<a href = 'showdetails.php?name=".urlencode($name)."&type=movie'> <img class= 'resize' src = '$path' /> </a>";				
 						}
 				?>
 		</div>

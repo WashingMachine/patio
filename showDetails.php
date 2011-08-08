@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<title>:.Patio, a PHP/MySQL frontend for XBMC.:</title>
+<title>.: Patio, a PHP/MySQL frontend for XBMC :.</title>
 <link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
 
-<script type="application/javascript" src="scripts/iscroll.js"></script>
+<script type="application/javascript" src="iscroll.js"></script>
 
 <script type="text/javascript">
 
@@ -23,32 +23,31 @@ window.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }
 </script>
 
 <?php
-	$name = $_GET['name'];
-	$year = $_GET['year'];
-	$type = $_GET['type'];
-	$ext = '.tbn';
 	include('config.php');
-	include('scripts/functions.php');
-	include('scripts/xbmc.php');
+	include('functions.php');
 	
-	//$xbmcConfig = array('host' => $xbmc_host, 'port' => $xbmc_port, 'user' => $xbmc_user, 'pass' => $xbmc_pass);
-	//$xbmcJson = new xbmcJson($xbmcConfig);
-	
-	$mysql_name = mysql_escape_mimic($name);
+	$tmp = to_utf8( $_GET['name'] );
+	//$tmp = $_GET['name'];
+	$type = $_GET['type'];
 
 	if($type == "movie")
 	{
+		$name = substr($tmp, 0, -11);
+		$mysql_name = mysql_escape_mimic($name);
 		if(substr($movie_fanart, -1) != "/") $movie_fanart .= "/";
-		$path = $movie_fanart.$name." ".$year.$ext;
+		$path = $movie_fanart.$tmp;
+		//printf("%s <br>\r\n", $name);
+		//printf("%s <br>\r\n", $path);
 
-		//$result = connect("SELECT c00,c01,c02,c04,c05,c11,c15 FROM movie WHERE c22 LIKE '%$mysql_name%'");
-		$result = connect("SELECT c00,c01,c02,c04,c05,c11,c15 FROM movie WHERE c22 LIKE '%$mysql_name%' OR c00 LIKE '%$mysql_name%'");
+		$result = connect("SELECT c00,c01,c02,c04,c05,c11,c15,strPath,strFileName FROM movieview WHERE c22 LIKE '%$mysql_name%' OR c00 LIKE '%$mysql_name%'");
 		$row = mysql_fetch_row($result);
 	}
 	else
 	{
+		$name = substr($tmp, 0, -4);
+		$mysql_name = mysql_escape_mimic($name);
 		if(substr($tvshow_fanart, -1) != "/") $tvshow_fanart .= "/";
-		$path = $tvshow_fanart.$name.$ext;
+		$path = $tvshow_fanart.$tmp;
 		
 		$result = connect("SELECT c00,c01,c04,c12,c13,c14 FROM tvshow WHERE c16 LIKE '%$mysql_name%'");
 		$row = mysql_fetch_row($result);
@@ -79,6 +78,8 @@ window.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }
 				<?php
 					if($type == "movie")
 					{
+						$file = $row[7].$row[8];
+						//echo "<p>$file</p>";
 						$rating = floatval($row[4]);
 						echo "<p>Rating: $rating Votes: $row[3] Runtime: $row[5] Director: $row[6]</p>";
 					}
@@ -92,9 +93,14 @@ window.addEventListener('DOMContentLoaded', setTimeout(function () { loaded(); }
 		
 		<div id="control">
 			<div id="play">
-				<a href= # >
-					<img src = "images/play.png" />
-				</a>
+				<a href = 'xbmc_play.php?file=<?php echo($file);?>'> <img src = 'images/play.png' /> </a>
+				   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+				   <script>
+				     $(document).ready(function(){
+				       $("a").click(function(event){
+				       });
+				     });
+				   </script>
 			</div>
 		</div>
 		
